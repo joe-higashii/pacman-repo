@@ -1,6 +1,8 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
+const scoreEl = document.querySelector('#scoreEl')
+
 canvas.width = innerWidth
 canvas.height = innerWidth
 
@@ -44,6 +46,29 @@ class Player {
     }
 }
 
+class Ghost {
+    constructor({ position, velocity, color = 'red' }) {
+        this.position = position
+        this.velocity = velocity
+        this.radius = 15
+        this.color = color
+    }
+
+    draw() {
+        c.beginPath()
+        c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
+        c.fillStyle = this.color
+        c.fill()
+        c.closePath()
+    }
+
+    update() {
+        this.draw()
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y
+    }
+}
+
 class Pellet {
     constructor({ position }) {
         this.position = position
@@ -59,6 +84,18 @@ class Pellet {
     }
 }
 
+const ghosts = [
+    new Ghost({
+        position: {
+            x: 0,
+            y: 0
+        },
+        velocity: {
+            x: 0,
+            y: 0
+        }
+    })
+]
 const pellets = []
 const boundaries = []
 const player = new Player({
@@ -88,6 +125,7 @@ const keys = {
 }
 
 let lastKey = ''
+let score = 0
 
 const map = [
     ['1', '-', '-', '-', '-', '-', '-', '-', '-', '-', '2'],
@@ -406,9 +444,17 @@ function animate() {
         }
     }
 
-    pellets.forEach((pellet) => {
+    for (let i = pellets.length - 1; 0 < i; i--) {
+        const pellet = pellets[i]
         pellet.draw()
-    })
+
+        if (Math.hypot(pellet.position.x - player.position.x, pellet.position.y - player.position.y) < pellet.radius + player.radius) {
+            console.log('touching')
+            pellets.splice(i, 1)
+            score += 1
+            scoreEl.innerHTML = score
+        }
+    }
 
     boundaries.forEach((boundary) => {
         boundary.draw()
@@ -424,8 +470,10 @@ function animate() {
         }
     })
     player.update()
-    // player.velocity.x = 0
-    // player.velocity.y = 0
+
+    ghosts.forEach(ghost => {
+        ghost.update()
+    })
 }
 
 animate()
