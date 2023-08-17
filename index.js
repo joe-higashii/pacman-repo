@@ -7,15 +7,18 @@ canvas.height = innerWidth
 class Boundary {
     static width = 40
     static height = 40
-    constructor({ position }) {
+    constructor({ position, image }) {
         this.position = position
         this.width = 40
         this.height = 40
+        this.image = image
     }
 
     draw() {
-        c.fillStyle = 'blue'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        // c.fillStyle = 'blue'
+        // c.fillRect(this.position.x, this.position.y, this.width, this.height)
+
+        c.drawImage(this.image, this.position.x, this.position.y)
     }
 }
 
@@ -71,12 +74,17 @@ const keys = {
 let lastKey = ''
 
 const map = [
-    ['-', '-', '-', '-', '-', '-'],
-    ['-', ' ', ' ', ' ', ' ', '-'],
-    ['-', ' ', '-', '-', ' ', '-'],
-    ['-', ' ', ' ', ' ', ' ', '-'],
-    ['-', '-', '-', '-', '-', '-']
+    ['-', '-', '-', '-', '-', '-', '-'],
+    ['|', ' ', ' ', ' ', ' ', ' ', '|'],
+    ['|', ' ', '-', ' ', '-', ' ', '|'],
+    ['|', ' ', ' ', ' ', ' ', ' ', '|'],
+    ['|', ' ', '-', ' ', '-', ' ', '|'],
+    ['|', ' ', ' ', ' ', ' ', ' ', '|'],
+    ['-', '-', '-', '-', '-', '-', '-'],
 ]
+
+const image = new Image()
+image.src = './assets/pipeHorizontal.png'
 
 map.forEach((row, i) => {
     row.forEach((symbol, j) => {
@@ -87,7 +95,8 @@ map.forEach((row, i) => {
                         position: {
                             x: Boundary.width * j,
                             y: Boundary.height * i
-                        }
+                        },
+                        image: image
                     })
                 )
                 break
@@ -95,29 +104,121 @@ map.forEach((row, i) => {
     })
 })
 
+function circleCollidesWithRectangle({
+    circle,
+    rectangle
+}) {
+    return (
+        circle.position.y - circle.radius + circle.velocity.y <= rectangle.position.
+            y +
+        rectangle.height &&
+        circle.position.x + circle.radius + circle.velocity.x >= rectangle.position.
+            x &&
+        circle.position.y + circle.radius + circle.velocity.y >= rectangle.position.
+            y &&
+        circle.position.x - circle.radius + circle.velocity.x <= rectangle.position.
+            x + rectangle.width
+    )
+}
+
 function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0, 0, canvas.width, canvas.height)
+
+    if (keys.w.pressed && lastKey === 'w') {
+        for (let i = 0; i < boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (circleCollidesWithRectangle({
+                circle: {
+                    ...player, velocity: {
+                        x: 0,
+                        y: -5
+                    }
+                },
+                rectangle: boundary
+            })
+            ) {
+                player.velocity.y = 0
+                break
+            } else {
+                player.velocity.y = -5
+            }
+        }
+    } else if (keys.a.pressed && lastKey === 'a') {
+        for (let i = 0; i < boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (circleCollidesWithRectangle({
+                circle: {
+                    ...player, velocity: {
+                        x: -5,
+                        y: 0
+                    }
+                },
+                rectangle: boundary
+            })
+            ) {
+                player.velocity.x = 0
+                break
+            } else {
+                player.velocity.x = -5
+            }
+        }
+    } else if (keys.s.pressed && lastKey === 's') {
+        for (let i = 0; i < boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (circleCollidesWithRectangle({
+                circle: {
+                    ...player, velocity: {
+                        x: 0,
+                        y: 5
+                    }
+                },
+                rectangle: boundary
+            })
+            ) {
+                player.velocity.y = 0
+                break
+            } else {
+                player.velocity.y = 5
+            }
+        }
+    } else if (keys.d.pressed && lastKey === 'd') {
+        for (let i = 0; i < boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (circleCollidesWithRectangle({
+                circle: {
+                    ...player, velocity: {
+                        x: 5,
+                        y: 0
+                    }
+                },
+                rectangle: boundary
+            })
+            ) {
+                player.velocity.x = 0
+                break
+            } else {
+                player.velocity.x = 5
+            }
+        }
+    }
+
     boundaries.forEach((boundary) => {
         boundary.draw()
 
-        if (player.position.y - player.radius <= boundary.position.y + boundary.height && player.position.x + player.radius >= boundary.position.x && player.position.y + player.radius >= boundary.position.y && player.position.x - player.radius <= boundary.position.x + boundary.width) {
-            console.log("coliding")
+        if (
+            circleCollidesWithRectangle({
+                circle: player,
+                rectangle: boundary
+            })
+        ) {
+            player.velocity.x = 0
+            player.velocity.y = 0
         }
     })
     player.update()
-    player.velocity.x = 0
-    player.velocity.y = 0
-
-    if (keys.w.pressed && lastKey === 'w') {
-        player.velocity.y = -5
-    } else if (keys.a.pressed && lastKey === 'a') {
-        player.velocity.x = -5
-    } else if (keys.s.pressed && lastKey === 's') {
-        player.velocity.y = 5
-    } else if (keys.d.pressed && lastKey === 'd') {
-        player.velocity.x = 5
-    }
+    // player.velocity.x = 0
+    // player.velocity.y = 0
 }
 
 animate()
