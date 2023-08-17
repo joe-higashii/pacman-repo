@@ -74,17 +74,26 @@ const keys = {
 let lastKey = ''
 
 const map = [
-    ['-', '-', '-', '-', '-', '-', '-'],
-    ['|', ' ', ' ', ' ', ' ', ' ', '|'],
-    ['|', ' ', '-', ' ', '-', ' ', '|'],
-    ['|', ' ', ' ', ' ', ' ', ' ', '|'],
-    ['|', ' ', '-', ' ', '-', ' ', '|'],
-    ['|', ' ', ' ', ' ', ' ', ' ', '|'],
-    ['-', '-', '-', '-', '-', '-', '-'],
+    ['1', '-', '-', '-', '-', '-', '-', '-', '-', '-', '2'],
+    ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
+    ['|', '.', 'b', '.', '[', '7', ']', '.', 'b', '.', '|'],
+    ['|', '.', '.', '.', '.', '_', '.', '.', '.', '.', '|'],
+    ['|', '.', '[', ']', '.', '.', '.', '[', ']', '.', '|'],
+    ['|', '.', '.', '.', '.', '^', '.', '.', '.', '.', '|'],
+    ['|', '.', 'b', '.', '[', '+', ']', '.', 'b', '.', '|'],
+    ['|', '.', '.', '.', '.', '_', '.', '.', '.', '.', '|'],
+    ['|', '.', '[', ']', '.', '.', '.', '[', ']', '.', '|'],
+    ['|', '.', '.', '.', '.', '^', '.', '.', '.', '.', '|'],
+    ['|', '.', 'b', '.', '[', '5', ']', '.', 'b', '.', '|'],
+    ['|', '.', '.', '.', '.', '.', '.', '.', '.', 'p', '|'],
+    ['4', '-', '-', '-', '-', '-', '-', '-', '-', '-', '3']
 ]
 
-const image = new Image()
-image.src = './assets/pipeHorizontal.png'
+function createImage(src) {
+    const image = new Image()
+    image.src = src
+    return image
+}
 
 map.forEach((row, i) => {
     row.forEach((symbol, j) => {
@@ -96,10 +105,188 @@ map.forEach((row, i) => {
                             x: Boundary.width * j,
                             y: Boundary.height * i
                         },
-                        image: image
+                        image: createImage('./assets/pipeHorizontal.png')
                     })
                 )
                 break
+            case '|':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: Boundary.width * j,
+                            y: Boundary.height * i
+                        },
+                        image: createImage('./assets/pipeVertical.png')
+                    })
+                )
+                break
+            case '1':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: Boundary.width * j,
+                            y: Boundary.height * i
+                        },
+                        image: createImage('./assets/pipeCorner1.png')
+                    })
+                )
+                break
+            case '2':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: Boundary.width * j,
+                            y: Boundary.height * i
+                        },
+                        image: createImage('./assets/pipeCorner2.png')
+                    })
+                )
+                break
+            case '3':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: Boundary.width * j,
+                            y: Boundary.height * i
+                        },
+                        image: createImage('./assets/pipeCorner3.png')
+                    })
+                )
+                break
+            case '4':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: Boundary.width * j,
+                            y: Boundary.height * i
+                        },
+                        image: createImage('./assets/pipeCorner4.png')
+                    })
+                )
+                break
+            case 'b':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: Boundary.width * j,
+                            y: Boundary.height * i
+                        },
+                        image: createImage('./assets/block.png')
+                    })
+                )
+                break
+            case '[':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: j * Boundary.width,
+                            y: i * Boundary.height
+                        },
+                        image: createImage('./assets/capLeft.png')
+                    })
+                )
+                break
+            case ']':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: j * Boundary.width,
+                            y: i * Boundary.height
+                        },
+                        image: createImage('./assets/capRight.png')
+                    })
+                )
+                break
+            case '_':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: j * Boundary.width,
+                            y: i * Boundary.height
+                        },
+                        image: createImage('./assets/capBottom.png')
+                    })
+                )
+                break
+            case '^':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: j * Boundary.width,
+                            y: i * Boundary.height
+                        },
+                        image: createImage('./assets/capTop.png')
+                    })
+                )
+                break
+            case '+':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: j * Boundary.width,
+                            y: i * Boundary.height
+                        },
+                        image: createImage('./assets/pipeCross.png')
+                    })
+                )
+                break
+            case '5':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: j * Boundary.width,
+                            y: i * Boundary.height
+                        },
+                        color: 'blue',
+                        image: createImage('./assets/pipeConnectorTop.png')
+                    })
+                )
+                break
+            case '6':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: j * Boundary.width,
+                            y: i * Boundary.height
+                        },
+                        color: 'blue',
+                        image: createImage('./assets/pipeConnectorRight.png')
+                    })
+                )
+                break
+            case '7':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: j * Boundary.width,
+                            y: i * Boundary.height
+                        },
+                        color: 'blue',
+                        image: createImage('./assets/pipeConnectorBottom.png')
+                    })
+                )
+                break
+            case '8':
+                boundaries.push(
+                    new Boundary({
+                        position: {
+                            x: j * Boundary.width,
+                            y: i * Boundary.height
+                        },
+                        image: createImage('./assets/pipeConnectorLeft.png')
+                    })
+                )
+                break
+            // case '.':
+            //     pellets.push(
+            //         new Pellet({
+            //             position: {
+            //                 x: j * Boundary.width + Boundary.width / 2,
+            //                 y: i * Boundary.height + Boundary.height / 2
+            //             }
+            //         })
+            //     )
+            //     break
         }
     })
 })
