@@ -509,6 +509,18 @@ function animate() {
         }
     }
 
+    for (let i = ghosts.length - 1; 0 <= i; i--) {
+        const ghost = ghosts[i]
+        if (Math.hypot(ghost.position.x - player.position.x, ghost.position.y - player.position.y) < ghost.radius + player.radius) {
+            if (ghost.scared) {
+                ghosts.splice(i, 1)
+            } else {
+                cancelAnimationFrame(animationId)
+                console.log('GAME OVER')
+            }
+        }
+    }
+
     for (let i = powerUps.length - 1; 0 <= i; i--) {
         const powerUP = powerUps[i]
         powerUP.draw()
@@ -520,7 +532,7 @@ function animate() {
 
                 setTimeout(() => {
                     ghost.scared = false
-                }, 3000)
+                }, 5000)
             })
         }
     }
@@ -554,11 +566,6 @@ function animate() {
 
     ghosts.forEach(ghost => {
         ghost.update()
-
-        if (Math.hypot(ghost.position.x - player.position.x, ghost.position.y - player.position.y) < ghost.radius + player.radius) {
-            cancelAnimationFrame(animationId)
-            console.log('GAME OVER')
-        }
 
         const collisions = []
         boundaries.forEach(boundary => {
