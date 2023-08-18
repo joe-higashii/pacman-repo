@@ -1,3 +1,11 @@
-# Projeto Pacman 🥠
+## pacman_projeto
+# ![icon](https://github.com/joe-higashii/pacman-repo/assets/129689531/099fce00-6c71-438b-917c-c092866749c5) pacman
 
-![pacman10-hp](https://github.com/joe-higashii/pacman-repo/assets/129689531/fe9eca27-cd09-44c0-819b-e0efa83902f6)
+https://joe-higashii.github.io/pacman-repo/
+
+* Este projeto é a reprodução do jogo clássico pacman utilizando html, css e javascript
+* Para executar o projeto basta usar os botões, "w", "a", "s" e "d" para direcionar o pacman
+
+Print da página de interação do projeto:
+![pacman preview](https://github.com/joe-higashii/pacman-repo/assets/129689531/d78e064b-ea4e-4eec-88dc-7a48692f7813)
+# 🤓
