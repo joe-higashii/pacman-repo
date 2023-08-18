@@ -55,12 +55,13 @@ class Ghost {
         this.color = color
         this.prevCollisions = []
         this.speed = 2
+        this.scared = false
     }
 
     draw() {
         c.beginPath()
         c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
-        c.fillStyle = this.color
+        c.fillStyle = this.scared ? 'blue' : this.color
         c.fill()
         c.closePath()
     }
@@ -87,6 +88,21 @@ class Pellet {
     }
 }
 
+class PowerUp {
+    constructor({ position }) {
+        this.position = position
+        this.radius = 9
+    }
+
+    draw() {
+        c.beginPath()
+        c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
+        c.fillStyle = 'white'
+        c.fill()
+        c.closePath()
+    }
+}
+
 const ghosts = [
     new Ghost({
         position: {
@@ -97,8 +113,42 @@ const ghosts = [
             x: Ghost.speed,
             y: 0
         }
+    }),
+    new Ghost({
+        position: {
+            x: Boundary.width * 6 + Boundary.width / 2,
+            y: Boundary.height * 3 + Boundary.height / 2
+        },
+        velocity: {
+            x: Ghost.speed,
+            y: 0
+        },
+        color: 'aqua'
+    }),
+    new Ghost({
+        position: {
+            x: Boundary.width * 6 + Boundary.width / 2,
+            y: Boundary.height * 3 + Boundary.height / 2
+        },
+        velocity: {
+            x: Ghost.speed,
+            y: 0
+        },
+        color: 'orangered'
+    }),
+    new Ghost({
+        position: {
+            x: Boundary.width * 6 + Boundary.width / 2,
+            y: Boundary.height * 3 + Boundary.height / 2
+        },
+        velocity: {
+            x: Ghost.speed,
+            y: 0
+        },
+        color: 'magenta'
     })
 ]
+const powerUps = []
 const pellets = []
 const boundaries = []
 const player = new Player({
@@ -344,6 +394,16 @@ map.forEach((row, i) => {
                     })
                 )
                 break
+            case 'p':
+                powerUps.push(
+                    new PowerUp({
+                        position: {
+                            x: j * Boundary.width + Boundary.width / 2,
+                            y: i * Boundary.height + Boundary.height / 2
+                        }
+                    })
+                )
+                break
         }
     })
 })
@@ -449,7 +509,23 @@ function animate() {
         }
     }
 
-    for (let i = pellets.length - 1; 0 < i; i--) {
+    for (let i = powerUps.length - 1; 0 <= i; i--) {
+        const powerUP = powerUps[i]
+        powerUP.draw()
+        if (Math.hypot(powerUP.position.x - player.position.x, powerUP.position.y - player.position.y) < powerUP.radius + player.radius) {
+            powerUps.splice(i, 1)
+
+            ghosts.forEach((ghost) => {
+                ghost.scared = true
+
+                setTimeout(() => {
+                    ghost.scared = false
+                }, 3000)
+            })
+        }
+    }
+
+    for (let i = pellets.length - 1; 0 <= i; i--) {
         const pellet = pellets[i]
         pellet.draw()
 
