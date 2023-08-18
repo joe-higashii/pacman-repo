@@ -1,7 +1,7 @@
 body {
     margin: 0;
     background-color: black;
-    padding: 10px 20px;
+    padding: 10px 20px 50px;
 }
 
 #gameCanvas {
@@ -9,6 +9,14 @@ body {
 }
 
 #gameOverText {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 48px;
+    color: #ff0000;
+    text-shadow: 2px 2px 4px #000;
+    display: none;
+}
+
+#youWinText {
     font-family: 'Press Start 2P', cursive;
     font-size: 48px;
     color: #ff0000;

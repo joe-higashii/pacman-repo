@@ -543,6 +543,8 @@ function animate() {
     if (pellets.length === 0) {
         console.log('YOU WIN')
         cancelAnimationFrame(animationId)
+        const youWinText = document.getElementById("youWinText")
+        youWinText.style.display = "block";
     }
 
     for (let i = powerUps.length - 1; 0 <= i; i--) {
