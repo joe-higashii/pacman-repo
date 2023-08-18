@@ -3,9 +3,6 @@ const c = canvas.getContext('2d')
 
 const scoreEl = document.querySelector('#scoreEl')
 
-canvas.width = innerWidth
-canvas.height = innerWidth
-
 class Boundary {
     static width = 40
     static height = 40
@@ -536,6 +533,8 @@ function animate() {
                 ghosts.splice(i, 1)
             } else {
                 cancelAnimationFrame(animationId)
+                const gameOverText = document.getElementById("gameOverText")
+                gameOverText.style.display = "block";
                 console.log('GAME OVER')
             }
         }
