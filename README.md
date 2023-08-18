@@ -7,5 +7,6 @@ https://joe-higashii.github.io/pacman-repo/
 * Para executar o projeto basta usar os botões, "w", "a", "s" e "d" para direcionar o pacman
 
 Print da página de interação do projeto:
+
 ![pacman preview](https://github.com/joe-higashii/pacman-repo/assets/129689531/d78e064b-ea4e-4eec-88dc-7a48692f7813)
 # 🤓
